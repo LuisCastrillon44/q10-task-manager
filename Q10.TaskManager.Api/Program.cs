@@ -1,8 +1,14 @@
+using Q10.TaskManager.Infrastructure.Interfaces;
+using Q10.TaskManager.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddSingleton<IConfig, SettingsRepository>();
+builder.Services.AddSingleton<IConfig, EnvironmentRepository>();
 
 var app = builder.Build();
 
@@ -14,24 +20,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+var MaxItemsPerPage = app.Configuration["MaxItemsPerPage:ApiKey"];
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+var env1 = app.Configuration["MaxItemsPerPage:ApiKey"];
+var env2 = Environment.GetEnvironmentVariable("MaxItemsPerPage:ApiKey");
 
 app.Run();
 
