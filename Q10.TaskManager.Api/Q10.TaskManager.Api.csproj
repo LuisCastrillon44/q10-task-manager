@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Configurations\" />
     <Folder Include="Controllers\" />
+	<ProjectReference Include="..\Q10.TaskManager.Infrastructure\Q10.TaskManager.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
