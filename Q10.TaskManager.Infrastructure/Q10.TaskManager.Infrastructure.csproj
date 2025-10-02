@@ -6,13 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Q10.TaskManager.Api\Q10.TaskManager.Api.csproj" />
-  </ItemGroup>
+  
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Repositories\" />
+	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.9" />
 	<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
   </ItemGroup>
 

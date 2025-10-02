@@ -1,33 +1,29 @@
 using Q10.TaskManager.Infrastructure.Interfaces;
 using Q10.TaskManager.Infrastructure.Repositories;
+using Q10.TaskManager.Infrastructure.Interfaces;
+using Q10.TaskManager.Infrastructure.Repositories;
+using Q10.TaskManager.Api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddScoped<IConfig, SettingsRepository>();
 
-builder.Services.AddSingleton<IConfig, SettingsRepository>();
-builder.Services.AddSingleton<IConfig, EnvironmentRepository>();
+// Add Memory Cache
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<ICacheRepository, CacheRepository>();
+
+builder.Services.AddControllers();
+
+// Add Swagger configuration
+builder.Services.AddSwaggerConfiguration();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.UseSwaggerConfiguration(app.Environment);
 
 app.UseHttpsRedirection();
 
-var MaxItemsPerPage = app.Configuration["MaxItemsPerPage:ApiKey"];
-
-var env1 = app.Configuration["MaxItemsPerPage:ApiKey"];
-var env2 = Environment.GetEnvironmentVariable("MaxItemsPerPage:ApiKey");
-
+app.MapControllers();
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

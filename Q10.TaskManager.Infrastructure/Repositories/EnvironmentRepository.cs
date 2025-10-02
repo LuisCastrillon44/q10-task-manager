@@ -11,7 +11,7 @@ namespace Q10.TaskManager.Infrastructure.Repositories
     {
         public string GetValue(string key)
         {
-            return Environment.GetEnvironmentVariable(key);
+            return Environment.GetEnvironmentVariable(key) ?? string.Empty;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Q10.TaskManager.Infrastructure.Interfaces;
 using Q10.TaskManager.Infrastructure.Repositories;
 
@@ -10,16 +9,15 @@ namespace Q10.TaskManager.Api.Controllers
     public class ConfigController : ControllerBase
     {
         public IConfig Config { get; set; }
-
         public ConfigController(IEnumerable<IConfig> configs)
         {
             Config = configs.OfType<EnvironmentRepository>().FirstOrDefault();
         }
-
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(Config.GetValue("Database:ConnectionString"));
+
+            return Ok(Config.GetValue("ASPNETCORE_ENVIRONMENT"));
         }
     }
 }
